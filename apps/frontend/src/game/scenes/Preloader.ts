@@ -34,6 +34,14 @@ export class Preloader extends Scene
 
         this.load.image('logo', 'logo.png');
         this.load.image('star', 'star.png');
+
+        this.load.tilemapTiledJSON("game", "game.json")
+        this.load.image("spritesheet", "spritesheet.png")
+
+        this.load.spritesheet("snowman", "snowman.png", {
+            frameWidth: 32,
+            frameHeight: 32
+        })
     }
 
     create ()

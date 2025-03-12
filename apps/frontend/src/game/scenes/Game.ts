@@ -1,3 +1,4 @@
+import {Direction,GridEngine} from 'grid-engine';
 import { EventBus } from '../EventBus';
 import { Scene } from 'phaser';
 
@@ -7,6 +8,8 @@ export class Game extends Scene
     background: Phaser.GameObjects.Image;
     gameText: Phaser.GameObjects.Text;
 
+    private gridEngine!: GridEngine;
+
     constructor ()
     {
         super('Game');
@@ -14,19 +17,50 @@ export class Game extends Scene
 
     create ()
     {
+        
         this.camera = this.cameras.main;
-        this.camera.setBackgroundColor(0x00ff00);
 
-        this.background = this.add.image(512, 384, 'background');
-        this.background.setAlpha(0.5);
+        const tilemap = this.make.tilemap({ key: "game" }); 
+        tilemap.addTilesetImage('spritesheet', 'spritesheet')
 
-        this.gameText = this.add.text(512, 384, 'Make something fun!\nand share it with us:\nsupport@phaser.io', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setOrigin(0.5).setDepth(100);
+        for (let i = 0; i < tilemap.layers.length; i++) { 
+            tilemap.createLayer(i, "spritesheet", 0, 0);
+        } 
+
+        const playerSprite = this.add.sprite(0, 0, "snowman"); 
+        this.cameras.main.startFollow(playerSprite, true); 
+        this.cameras.main.setFollowOffset( 
+            -playerSprite.width / 2, 
+            -playerSprite.height / 2
+        );
+
+        const gridEngineConfig = {
+            characters: [
+                {
+                    id: "snowman",
+                    sprite: playerSprite,
+                    walkingAnimationMapping: 0,
+                    startPosition: { x: 40, y: 20},
+                    offsetY: -4
+                }
+            ]
+        }
+        this.gridEngine.create(tilemap, gridEngineConfig)
 
         EventBus.emit('current-scene-ready', this);
+    }
+
+    update() {
+    const cursors = this.input.keyboard?.createCursorKeys()!; 
+      if (cursors.left.isDown) { 
+        this.gridEngine.move("snowman", Direction.LEFT); 
+      } else if (cursors.right.isDown) { 
+        this.gridEngine.move("snowman", Direction.RIGHT); 
+      } else if (cursors.up.isDown) { 
+        this.gridEngine.move("snowman", Direction.UP); 
+      } else if (cursors.down.isDown) { 
+        this.gridEngine.move("snowman", Direction.DOWN); 
+      } 
     }
 
     changeScene ()
