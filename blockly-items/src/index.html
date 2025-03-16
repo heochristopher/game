@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Blockly Draw</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div id="pageContainer">
+  
+      
+      <div id="outputPane">
+        <!--not visible-->
+        <pre id="generatedCode"><code></code></pre>
+        <div id="output"></div>
+      </div>
+      <div>
+      <div id="blocklyDiv"></div>
+      <div id = "buttons">
+        <button id = "play_button">play</button>
+      <button id = "reset_button"> reset </button>
+      </div>
+    </div>
+      <div class="grid">
+        <img class="turtle-image" src="images/turtle.png" alt="Turtle Image">
+      </div>
+      
+    </div>
+
+    <!-- Load Blockly core -->
+    <script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
+    <!-- Load the default blocks -->
+    <script src="https://unpkg.com/blockly/blocks_compressed.js"></script>
+    <!-- Load a generator -->
+    <script src="https://unpkg.com/blockly/javascript_compressed.js"></script>
+    <!-- Load a message file -->
+    <script src="https://unpkg.com/blockly/msg/en.js"></script>
+    <script src="scripts/drawing_blocks.js"></script>
+    <script src="index.js" type="module"></script>
+
+  </body>
+</html>
