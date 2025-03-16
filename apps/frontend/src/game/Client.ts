@@ -23,15 +23,14 @@ export class Client {
         };
     }
     private handleMessage(data: any) {
-        console.log("message received: ", data)
+        console.log("message received: ", data);
         switch (data.type) {
             case "setPlayerId":
-                // Set the local player's ID so that Game.ts knows which sprite is "local"
                 Game.instance.setLocalPlayerId(data.id);
-                      Game.instance.spawnPlayer(data.id, data.x, data.y);
+                Game.instance.spawnPlayer(data.id, data.x, data.y);
                 break;
             case "allplayers":
-                const players = data.players || []
+                const players = data.players || [];
                 players.forEach((p: any) => {
                     Game.instance.spawnPlayer(p.id, p.x, p.y);
                 });
@@ -58,6 +57,10 @@ export class Client {
                 direction,
             })
         );
+    }
+
+    public isOpen(): boolean {
+        return this.socket.readyState === WebSocket.OPEN;
     }
 
 }
