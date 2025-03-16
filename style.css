@@ -1,0 +1,13 @@
+.grid {
+    display: grid;
+    max-width: fit-content;
+    grid-template-columns: repeat(25, 25px);
+    grid-template-rows: repeat(25, 25px);
+    border: 2px solid black;
+}
+
+
+.box {
+    border: 1px solid gray;
+    background-color: white;
+}
