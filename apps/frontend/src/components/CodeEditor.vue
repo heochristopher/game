@@ -81,35 +81,41 @@ JavaScript.javascriptGenerator.forBlock['controls_repeat_custom'] = function(blo
   return code;
 };
 
+let numBlocks = 0; 
+let blockColors = [];
+
 // ----- Helper Functions -----
 // (Replace these dummy implementations with your actual logic.)
 function shiftTurtle(direction: string, jumpScale: number): Promise<void> {
-  console.log(`shiftTurtle called: direction=${direction}, jumpScale=${jumpScale}`);
-  if (direction === "left" && turtleX.value > 1) {
+  //console.log(`shiftTurtle called: direction=${direction}, jumpScale=${jumpScale}`);
+  if (direction === "left" && turtleX.value > 1*jumpScale) {
     turtleX.value -= jumpScale;
-  } else if (direction === "right" && turtleX.value < gridSize.value) {
+  } else if (direction === "right" && turtleX.value < gridSize.value - (jumpScale - 1)) {
     turtleX.value += jumpScale;
-  } else if (direction === "up" && turtleY.value > 1) {
+  } else if (direction === "up" && turtleY.value > 1*jumpScale) {
     turtleY.value -= jumpScale;
-  } else if (direction === "down" && turtleY.value < gridSize.value) {
+  } else if (direction === "down" && turtleY.value < gridSize.value - (jumpScale-1)) {
     turtleY.value += jumpScale;
   }
   return new Promise(resolve => setTimeout(resolve, WAIT_TIME));
 }
 function loadBlocks(amount: number, color: string): void {
   console.log(`loadBlocks called: amount=${amount}, color=${color}`);
-  const cellId = `${turtleX.value}_${turtleY.value}`;
-  const cell = document.getElementById(cellId);
-  if (cell) {
-    cell.style.backgroundColor = color;
+  numBlocks += amount;
+  for (let i = 0; i < amount; i++) {
+    blockColors.push(color);
   }
 }
 function setBlockColor(): void {
   console.log("setBlockColor called");
   const cellId = `${turtleX.value}_${turtleY.value}`;
   const cell = document.getElementById(cellId);
-  if (cell) {
-    cell.style.backgroundColor = "yellow";
+  if (numBlocks > 0) {
+    cell.style.backgroundColor = blockColors.shift();
+    numBlocks -= 1;
+    console.log(numBlocks);
+  } else {
+    console.log("no blocks left")
   }
 }
 (window as any).shiftTurtle = shiftTurtle;
@@ -275,9 +281,9 @@ export default defineComponent({
     };
 
     const handleReset = () => {
-      if (workspace.value) {
-        workspace.value.clear();
-      }
+      // if (workspace.value) {
+      //   workspace.value.clear();
+      // }
       // Reset grid cells to white.
       const cells = document.querySelectorAll('.grid-cell');
       cells.forEach(cell => {
@@ -286,6 +292,8 @@ export default defineComponent({
       // Reset turtle to center.
       turtleX.value = 13;
       turtleY.value = 13;
+      numBlocks = 0;
+      blockColors = [];
     };
 
     onMounted(() => {
