@@ -1,35 +1,28 @@
 <script setup lang="ts">
-import Phaser from 'phaser';
-import { ref, toRaw } from 'vue';
-import type { MainMenu } from './game/scenes/MainMenu';
-import PhaserGame from './game/PhaserGame.vue'
+import { ref } from 'vue';
+import PhaserGame from './game/PhaserGame.vue';
 
-// The sprite can only be moved in the MainMenu Scene
-const canMoveSprite = ref();
+// Remove the import for MainMenu since that scene is no longer used
 
-//  References to the PhaserGame component (game and scene are exposed)
+// Flag that can control if the sprite should be movable; adjust logic as needed.
+const canMoveSprite = ref(true);
+
+// Reference to the PhaserGame component (game and scene are exposed)
 const phaserRef = ref();
 
-const changeScene = () => {
-
-    const scene = toRaw(phaserRef.value.scene) as MainMenu;
-
-    if (scene)
-    {
-        //  Call the changeScene method defined in the `MainMenu`, `Game` and `GameOver` Scenes
-        scene.changeScene();
-    }
-
-}
-
-const currentScene = (scene: MainMenu) => {
-
-    canMoveSprite.value = (scene.scene.key !== "MainMenu");
-
-}
+// This handler is called when the active scene changes.
+// Adjust this logic if you need to disable sprite movement in some scenes.
+const currentScene = (scene: any) => {
+  // For example, you might decide:
+  // canMoveSprite.value = (scene.scene.key !== "SomeOtherScene");
+  // For now, we simply allow movement in all scenes:
+  canMoveSprite.value = true;
+};
 
 </script>
 
 <template>
+  <div id="app">
     <PhaserGame ref="phaserRef" @current-active-scene="currentScene" />
+  </div>
 </template>

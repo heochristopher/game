@@ -40,6 +40,12 @@ export class Game extends Scene {
             tilemap.createLayer(i, "spritesheet", 0, 0);
         }
 
+        const interactivesLayer = tilemap.getLayer("Interactives")!.tilemapLayer
+        interactivesLayer.setInteractive()
+        interactivesLayer.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+            window.dispatchEvent(new CustomEvent("openEditor"));
+        });
+
         // Store map dimensions.
         this.mapWidth = tilemap.widthInPixels;
         this.mapHeight = tilemap.heightInPixels;
@@ -252,4 +258,5 @@ export class Game extends Scene {
         console.log("Local player ID set to:", id);
     }
 }
+
 

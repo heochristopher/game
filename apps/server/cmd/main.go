@@ -73,8 +73,8 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 	playerID := fmt.Sprintf("player-%d", len(players)+1)
 	newPlayer := &Player{
 		ID:   playerID,
-		X:    100 + len(players)*50, // Offset each player slightly
-		Y:    100 + len(players)*50,
+		X:    800 + len(players)*50, // Offset each player slightly
+		Y:    200 + len(players)*50,
 		Conn: conn,
 	}
 
