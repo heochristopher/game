@@ -71,10 +71,10 @@ export async function handlePlay(): Promise<void> {
  * Clears the Blockly workspace and resets the grid.
  */
 export function handleReset(): void {
-    const workspace = Blockly.getMainWorkspace();
-    if (workspace) {
-        workspace.clear();
-    }
+    // const workspace = Blockly.getMainWorkspace();
+    // if (workspace) {
+    //     workspace.clear();
+    // }
     // Reset all grid boxes to white.
     const allBoxes = document.querySelectorAll(".box");
     allBoxes.forEach((box) => {
