@@ -4,6 +4,8 @@ import { EventBus } from './EventBus';
 import StartGame from './main';
 import Phaser from 'phaser';
 
+import CodeEditor from '../components/CodeEditor.vue'
+
 // Save the current scene instance
 const scene = ref();
 const game = ref();
@@ -39,5 +41,44 @@ defineExpose({ scene, game });
 </script>
 
 <template>
-    <div id="game-container"></div>
+    <div class="phaser-game-container">
+        <div id="game-container"></div>
+        <CodeEditor v-if="editorVisible" @close="editorVisible = false"/>
+    </div>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'PhaserGame',
+  components: {
+    CodeEditor,
+  },
+  data() {
+    return {
+      editorVisible: false,
+    };
+  },
+  mounted() {
+    // Listen for a global event from your Phaser game to open the editor.
+    window.addEventListener('openEditor', this.openEditor);
+  },
+  beforeUnmount() {
+    window.removeEventListener('openEditor', this.openEditor);
+  },
+  methods: {
+    openEditor() {
+      this.editorVisible = true;
+    },
+  },
+});
+</script>
+
+<style scoped>
+.phaser-game-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+</style>
