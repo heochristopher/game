@@ -31,7 +31,9 @@ export class Game extends Scene {
 
     create() {
         // Initialize the WebSocket client.
-        this.client = new Client("ws://localhost:8081/ws");
+        this.client = new Client(
+            "wss://websockets-server-kqfuh.ondigitalocean.app/ws"
+        );
 
         // Create the tilemap and its layers.
         const tilemap = this.make.tilemap({ key: "game" });
@@ -258,5 +260,6 @@ export class Game extends Scene {
         console.log("Local player ID set to:", id);
     }
 }
+
 
 
